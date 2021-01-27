@@ -2,6 +2,7 @@ import Map from '@arcgis/core/Map';
 import MapView from '@arcgis/core/views/MapView'
 import FeatureLayer from '@arcgis/core/layers/FeatureLayer';
 import basemap from './basemap';
+import './style/global.css';
 
 function main() {
   console.log('start')

@@ -10,11 +10,18 @@ module.exports = {
   entry: {
     app: [
       './src/client/index.js',
-      // 'webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000&reload=true', // dev
     ],
   },
+  devServer: {
+    contentBase: path.join(__dirname, 'dist'),
+    compress: true,
+    port: 9000,
+    hot: true,
+    proxy: {
+      '/assets': 'http://localhost:3000'
+    }
+  },
   plugins: [
-    new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: './src/client/index.html',
       publicPath: './',
@@ -22,6 +29,7 @@ module.exports = {
     // new ManifestPlugin(), // https://github.com/shellscape/webpack-manifest-plugin/issues/219
     new MiniCssExtractPlugin(),
     new webpack.EvalSourceMapDevToolPlugin({}),
+    new CleanWebpackPlugin(),
   ],
   optimization: {
     splitChunks: {
