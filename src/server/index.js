@@ -1,8 +1,12 @@
 const Koa = require('koa');
 const path = require('path');
+const fs = require('fs');
+const crypto = require('crypto');
+const Router = require('koa-router')
 const static = require('koa-static');
 
 const app = new Koa();
+const router = new Router();
 
 app.use(static(
   path.resolve('public'), { //静态文件所在目录
@@ -26,8 +30,24 @@ app.use(async (ctx, next) => {
 });
 
 // response
-app.use(async ctx => {
-  ctx.body = 'Hello World';
+router.get(/\/*/, async (ctx, next) => {
+  ctx.type = 'html';
+  ctx.body = fs.createReadStream('dist/index.html');
+
+  const input = fs.createReadStream('dist/index.html');
+  const hash = crypto.createHash('sha256');
+  input.on('readable', () => {
+    // 哈希流只会生成一个元素。
+    const data = input.read();
+    if (data)
+      hash.update(data);
+    else {
+      ctx.response.etag = hash.digest('hex');
+      console.log(`${ctx.response.etag}`);
+    }
+  });
 });
+
+app.use(router.routes());
 
 app.listen(3000);

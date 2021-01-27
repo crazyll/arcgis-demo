@@ -9,7 +9,7 @@ module.exports = {
   mode: process.env.NODE_ENV,
   entry: {
     app: [
-      './src/client/index.js',
+      './src/client/app.jsx',
     ],
   },
   devServer: {
@@ -18,7 +18,11 @@ module.exports = {
     port: 9000,
     hot: true,
     proxy: {
-      '/assets': 'http://localhost:3000'
+      '/': 'http://localhost:3000'
+    },
+    stats: 'errors-only',
+    writeToDisk: (filePath) => {
+      return /index\.html$/.test(filePath);
     }
   },
   plugins: [
@@ -95,13 +99,18 @@ module.exports = {
         ]
       },
       {
-        test: /\.js$/,
+        test: /\.(js|jsx)$/,
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env'],
-            plugins: ['@babel/plugin-transform-runtime']
+            presets: [
+              [
+                '@babel/preset-env',
+                { targets: { browsers: "> 0.25%, not dead", node: "current" } },
+              ],
+              "@babel/preset-react",
+            ],
           }
         }
       }
