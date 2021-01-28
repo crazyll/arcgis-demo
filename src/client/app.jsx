@@ -5,20 +5,38 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
-import Home from './page/home';
-import About from './page/about';
+import Loadable from 'react-loadable';
+import routes from './routes';
+import Layout from './layout';
 import './style/global.css';
 
 function App() {
   return (
     <Router>
       <Switch>
-      <Route path="/about">
-        <About />
-      </Route>
-      <Route path="/">
-        <Home />
-      </Route>
+        {routes.map(i => (
+          <Route
+            key={i.path}
+            path={i.path}
+            exact={i.exact}
+            component={
+              Loadable({
+                loader: i.loader,
+                loading() {
+                  return <div>Loading...</div>
+                },
+                render(loaded, props) {
+                  let Component = loaded.default;
+                  return (
+                    <Layout>
+                      <Component {...props}/>
+                    </Layout>
+                  );
+                }
+              })
+            }
+          />
+        ))}
       </Switch>
     </Router>
   );

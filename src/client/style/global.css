@@ -6,3 +6,12 @@ body,
   height: 100%;
   width: 100%;
 }
+
+body {
+  font-family: -apple-system,BlinkMacSystemFont,Helvetica Neue,PingFang SC,Microsoft YaHei,Source Han Sans SC,Noto Sans CJK SC,WenQuanYi Micro Hei,sans-serif;
+}
+
+:root {
+  --color-header: #24292e;
+  --color-primary: rgb(0, 102, 255);
+}

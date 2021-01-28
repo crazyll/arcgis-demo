@@ -25,6 +25,7 @@ module.exports = {
       return /index\.html$/.test(filePath);
     }
   },
+  devtool: 'eval-source-map',
   plugins: [
     new HtmlWebpackPlugin({
       template: './src/client/index.html',
@@ -33,7 +34,7 @@ module.exports = {
     // new ManifestPlugin(), // https://github.com/shellscape/webpack-manifest-plugin/issues/219
     new MiniCssExtractPlugin(),
     new webpack.EvalSourceMapDevToolPlugin({}),
-    new CleanWebpackPlugin(),
+    // new CleanWebpackPlugin(),
   ],
   optimization: {
     splitChunks: {
@@ -52,7 +53,7 @@ module.exports = {
     },
     // https://developers.google.com/web/fundamentals/performance/webpack/use-long-term-caching
     // https://www.jianshu.com/p/714ce38b9fdc
-    runtimeChunk: true,
+    runtimeChunk: "single",
   },
   module: {
     rules: [
@@ -111,7 +112,7 @@ module.exports = {
               ],
               "@babel/preset-react",
             ],
-          }
+          },
         }
       }
     ]

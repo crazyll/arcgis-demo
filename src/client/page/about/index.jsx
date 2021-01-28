@@ -1,5 +1,7 @@
 import React from 'react';
 
-export default () => (
-  <div>about</div>
-)
+export default function About (){
+  return (
+    <div>about, hahaha</div>
+  )
+}
