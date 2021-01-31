@@ -1,9 +1,9 @@
-// tsconfig.json
 {
-  "compilerOptions": {},
-  "include": [
-    "node_modules/arcgis-js-api/index.d.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx"
-  ]
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "allowJs": true,
+    "noEmit": true,
+    "jsx": "react" // https://javascriptplayground.com/vscode-go-to-definition-jsx/
+  }
 }

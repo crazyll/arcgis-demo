@@ -2,7 +2,7 @@ import React from 'react';
 import Nav from './nav';
 import styles from './index.css';
 
-export default function ({ children }) {
+export default function Layout({ children }) {
   return (
     <>
       <Nav />

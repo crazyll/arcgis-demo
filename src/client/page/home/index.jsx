@@ -1,32 +1,35 @@
 import React, { useEffect } from 'react';
 import Map from '@arcgis/core/Map';
-import MapView from '@arcgis/core/views/MapView'
-import basemap from '../../basemap';
+import MapView from '@arcgis/core/views/MapView';
+import { addSearch, addTrack } from '../../helper/widgets';
+import basemaps from '../../helper/basemaps';
+import styles from './index.css';
 
-function main() {
-  console.log('start')
-  var map = new Map({
-    basemap: "topo-vector",
+// MapView
+function init() {
+  const map = new Map({
+    basemap: 'topo-vector',
   });
 
-  var view = new MapView({
-    container: "viewDiv",
-    map: map,
-    center: [-118.805, 34.027], // longitude, latitude
-    zoom: 13,
+  const view = new MapView({
+    container: 'viewDiv',
+    map,
+    center: [114.03, 22.32], // 深圳
+    zoom: 3,
   });
 
-  basemap(view);
+  return view;
 }
 
 export default function Index() {
-
   useEffect(() => {
-    main();
-  }, [])
+    const view = init();
+    addTrack(view);
+    addSearch(view);
+    basemaps(view);
+  }, []);
 
   return (
-    <div>home</div>
-  )
+    <div id="viewDiv" className="common-view" />
+  );
 }
-

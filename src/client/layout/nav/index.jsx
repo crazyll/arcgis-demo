@@ -12,16 +12,16 @@ const menus = [{
 }, {
   name: '实时数据',
   url: '/data',
-}]
+}];
 
-export default function () {
+export default function Nav() {
   return (
     <header className={styles.container}>
-      {menus.map(i => (
+      {menus.map((i) => (
         <Link className={styles.link} key={i.name} to={i.url}>
           {i.name}
         </Link>
       ))}
     </header>
-  )
+  );
 }

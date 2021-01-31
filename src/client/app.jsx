@@ -4,7 +4,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-} from "react-router-dom";
+} from 'react-router-dom';
 import Loadable from 'react-loadable';
 import routes from './routes';
 import Layout from './layout';
@@ -14,7 +14,7 @@ function App() {
   return (
     <Router>
       <Switch>
-        {routes.map(i => (
+        {routes.map((i) => (
           <Route
             key={i.path}
             path={i.path}
@@ -23,16 +23,16 @@ function App() {
               Loadable({
                 loader: i.loader,
                 loading() {
-                  return <div>Loading...</div>
+                  return <div>Loading...</div>;
                 },
                 render(loaded, props) {
-                  let Component = loaded.default;
+                  const Component = loaded.default;
                   return (
                     <Layout>
-                      <Component {...props}/>
+                      <Component {...props} />
                     </Layout>
                   );
-                }
+                },
               })
             }
           />

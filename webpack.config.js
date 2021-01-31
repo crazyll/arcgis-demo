@@ -2,58 +2,50 @@ const path = require('path');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
+// const ManifestPlugin = require('webpack-manifest-plugin');
+const ESLintPlugin = require('eslint-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const babelConfig = require('./babel.config.json');
+
+const dev = process.env.NODE_ENV === 'development';
 
 module.exports = {
   mode: process.env.NODE_ENV,
-  entry: {
-    app: [
-      './src/client/app.jsx',
-    ],
-  },
+  entry: [
+    'core-js/modules/es.promise',
+    'core-js/modules/es.array.iterator',
+    './src/client/app.jsx',
+  ],
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     compress: true,
     port: 9000,
     hot: true,
     proxy: {
-      '/': 'http://localhost:3000'
+      '/': 'http://localhost:3000',
     },
     stats: 'errors-only',
-    writeToDisk: (filePath) => {
-      return /index\.html$/.test(filePath);
-    }
+    writeToDisk: (filePath) => /index\.html$/.test(filePath),
   },
   devtool: 'eval-source-map',
-  plugins: [
-    new HtmlWebpackPlugin({
-      template: './src/client/index.html',
-      publicPath: './',
-    }),
-    // new ManifestPlugin(), // https://github.com/shellscape/webpack-manifest-plugin/issues/219
-    new MiniCssExtractPlugin(),
-    new webpack.EvalSourceMapDevToolPlugin({}),
-    // new CleanWebpackPlugin(),
-  ],
   optimization: {
     splitChunks: {
       cacheGroups: {
         commons: {
-          name: "commons",
-          chunks: "initial",
-          minChunks: 2
+          name: 'commons',
+          chunks: 'initial',
+          minChunks: 2,
         },
         vendors: {
           test: /[\\/]node_modules[\\/]/,
-          name: "vendors",
-          chunks: "all"
-        }
-      }
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
     },
     // https://developers.google.com/web/fundamentals/performance/webpack/use-long-term-caching
     // https://www.jianshu.com/p/714ce38b9fdc
-    runtimeChunk: "single",
+    runtimeChunk: 'single',
   },
   module: {
     rules: [
@@ -79,8 +71,8 @@ module.exports = {
                   return 'local';
                 },
                 localIdentName: process.env.NODE_ENV === 'development' ? '[path][name]__[local]' : '[hash:base64:5]',
-              }
-            }
+              },
+            },
           },
           {
             loader: 'postcss-loader',
@@ -97,26 +89,32 @@ module.exports = {
           {
             loader: 'less-loader',
           },
-        ]
+        ],
       },
       {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules|bower_components)/,
         use: {
           loader: 'babel-loader',
-          options: {
-            presets: [
-              [
-                '@babel/preset-env',
-                { targets: { browsers: "> 0.25%, not dead", node: "current" } },
-              ],
-              "@babel/preset-react",
-            ],
-          },
-        }
-      }
-    ]
+          options: babelConfig,
+        },
+      },
+    ],
   },
+  plugins: [
+    new ESLintPlugin({
+      threads: true,
+    }),
+    new HtmlWebpackPlugin({
+      template: './src/client/index.html',
+      publicPath: './',
+    }),
+    // new ManifestPlugin(), // https://github.com/shellscape/webpack-manifest-plugin/issues/219
+    new MiniCssExtractPlugin(),
+    new webpack.EvalSourceMapDevToolPlugin({}),
+    dev && new CleanWebpackPlugin(),
+
+  ],
   output: {
     filename: '[name].[chunkhash].js',
     path: path.resolve(__dirname, 'dist'),
@@ -124,5 +122,5 @@ module.exports = {
   resolve: {
     extensions: ['.js', '.jsx'],
     symlinks: false,
-  }
+  },
 };

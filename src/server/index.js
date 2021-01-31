@@ -2,16 +2,22 @@ const Koa = require('koa');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
-const Router = require('koa-router')
-const static = require('koa-static');
+const Router = require('koa-router');
+const koaStatic = require('koa-static');
 
 const app = new Koa();
 const router = new Router();
 
-app.use(static(
-  path.resolve('public'), { //静态文件所在目录
-    maxage: 30*24*60*60*1000, //指定静态资源在浏览器中的缓存时间
-  }
+app.use(koaStatic(
+  path.resolve('public'), { // 静态文件所在目录
+    maxage: 30 * 24 * 60 * 60 * 1000, // 指定静态资源在浏览器中的缓存时间
+  },
+));
+
+app.use(koaStatic(
+  path.resolve('dist'), { // 静态文件所在目录
+    maxage: 30 * 24 * 60 * 60 * 1000, // 指定静态资源在浏览器中的缓存时间
+  },
 ));
 
 // logger
@@ -30,7 +36,7 @@ app.use(async (ctx, next) => {
 });
 
 // response
-router.get(/\/*/, async (ctx, next) => {
+router.get(/\/*/, async (ctx) => {
   ctx.type = 'html';
   ctx.body = fs.createReadStream('dist/index.html');
 
@@ -39,8 +45,7 @@ router.get(/\/*/, async (ctx, next) => {
   input.on('readable', () => {
     // 哈希流只会生成一个元素。
     const data = input.read();
-    if (data)
-      hash.update(data);
+    if (data) hash.update(data);
     else {
       ctx.response.etag = hash.digest('hex');
       console.log(`${ctx.response.etag}`);
