@@ -1,6 +1,6 @@
 # arcgis-demo
 
-## 开始
+## start
 下载
 
  `git clone https://github.com/crazyll/arcgis-demo.git`
@@ -9,13 +9,18 @@
 
  `yarn`
 
-准备
+ 开发环境
 
+ `yarn serve`
 
-开发环境
-
- `yarn serve` // 启动 server 端
-
- `yarn dev` // 启动 browser 端
+ `yarn dev`
 
 ## 客户端
+### 使用 arcgis-js-api
+
+
+## 服务端
+
+### 1. 爬虫
+
+### 2. 提供 rest api

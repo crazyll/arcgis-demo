@@ -10,7 +10,7 @@ const menus = [{
   name: '主页',
   url: '/',
 }, {
-  name: '数据',
+  name: '实时数据',
   url: '/data',
 }];
 
