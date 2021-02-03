@@ -7,7 +7,6 @@
   "license": "MIT",
   "browserslist": "> 0.25%, not dead",
   "dependencies": {
-    "@arcgis/core": "^4.18.1",
     "core-js": "^3.8.3",
     "koa": "^2.13.1",
     "koa-router": "^10.0.0",
@@ -22,7 +21,6 @@
     "serve": "node ./src/server/index.js",
     "dev": "export NODE_ENV='development' && webpack serve",
     "build": "export NODE_ENV='production' && webpack",
-    "copy": "rsync -r ./node_modules/@arcgis/core/assets public",
     "test": "yarn run lint"
   },
   "devDependencies": {
